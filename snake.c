@@ -6,13 +6,18 @@
 #define WIDTH 900
 #define HEIGHT 600
 
-#define CELL_SIZE 15
+#define CELL_SIZE 20
 #define ROWS HEIGHT/CELL_SIZE
 #define COLUMNS WIDTH/ CELL_SIZE
 #define LINE_WIDTH 2
 
 #define COLOR_GRID 0x1f1f1f1f
 #define COLOR_WHITE 0xffffffff
+#define COLOR_APPLE 0xffff0000
+
+#define SNAKE(x,y) fill_cell(surface,x,y,COLOR_WHITE)
+#define APPLE(x,y) fill_cell(surface,x,y,COLOR_APPLE)
+#define DRAW_GRID draw_grid(surface)
 
 int draw_grid(SDL_Surface* surface)
 {
@@ -51,17 +56,33 @@ int main(int argc, char* argv[])
     
     SDL_Event event;
     int game = 1;
+    int snake_x = 5;
+    int snake_y = 5;
+    int apple_x = 13;
+    int apple_y = 17;
     while (game)
     {
         while (SDL_PollEvent(&event))
         {
             if(event.type == SDL_QUIT)
                 game = 0;
+            if(event.type == SDL_KEYDOWN)
+            {
+                if (event.key.keysym.sym == SDLK_RIGHT)
+                    snake_x++;
+                if (event.key.keysym.sym == SDLK_LEFT)
+                    snake_x--;
+                if (event.key.keysym.sym == SDLK_UP)
+                    snake_y--;
+                if (event.key.keysym.sym == SDLK_DOWN)
+                    snake_y++;
+            }
         }
 
-        fill_cell(surface,9,6,COLOR_WHITE);
+        SNAKE(snake_x,snake_y);
+        APPLE(apple_x,apple_y);
+        DRAW_GRID;
 
-        draw_grid(surface);
         SDL_UpdateWindowSurface(window);
         SDL_Delay(20);
     }
