@@ -15,21 +15,22 @@
 
 int draw_grid(SDL_Surface* surface)
 {
-    SDL_Rect line = {0,0,900,LINE_WIDTH};
-    for(int i=0; i<ROWS; i++)
+    SDL_Rect row_line = {0,0,900,LINE_WIDTH};
+    for(row_line.y = 0; row_line.y < HEIGHT; row_line.y += CELL_SIZE)
     {
-        
-        SDL_FillRect(surface,&line, GRID_COLOR);
+        SDL_FillRect(surface,&row_line, GRID_COLOR);
     }
-    for (int j=0; j<COLUMNS; j++)
-    {
 
+    SDL_Rect col_line = {0,0,LINE_WIDTH,HEIGHT};
+    for (col_line.x = 0; col_line.x < WIDTH; col_line.x += CELL_SIZE)
+    {
+        SDL_FillRect(surface,&col_line, GRID_COLOR);
     }
 }
 
-int main()
+int main(int argc, char* argv[])
 {
-    printf("Hello Snake with\n");
+    printf("Hello Snake with SDL2\n");
     SDL_Init(SDL_INIT_VIDEO);
     SDL_Window* window = SDL_CreateWindow(
         "Classic Snake",
